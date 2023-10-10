@@ -104,7 +104,12 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
+          title: 'Order',
+          to: '/inspire'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'Stock',
           to: '/inspire'
         }
       ],
