@@ -2,3 +2,19 @@
 //
 // The variables you want to modify
 // $font-size-root: 20px;
+
+@font-face {
+  font-family: 'Joystix';
+  src: url('~static/fonts/arcade-classic.ttf')format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+// $body-font-family : 'Kanit', 'sans-serif' !default;
+.kanit-font {
+    font-family: 'Kanit', sans-serif;
+  }
+.joystix-font{
+  font-family: 'Joystix';
+}
