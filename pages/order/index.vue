@@ -3,7 +3,7 @@
         <div class="content">
             <v-row>
                 <v-col>
-                    <span class="header-menu">What drink ?</span>
+                    <span style="font-size: 24px;" class="header-menu">Select your drink </span>
                 </v-col>
             </v-row>
             <v-row>
@@ -31,10 +31,10 @@
                         </v-col>
                     </v-row>
                     <v-row v-if="menu" class="my-2">
-                        <v-col class="col-style" cols="2">
+                        <v-col class="col-style" cols="3">
                             attributes
                         </v-col>
-                        <v-col cols="10" style="align-self: center">
+                        <v-col cols="9" style="align-self: center">
                             <v-divider></v-divider>
                         </v-col>
                     </v-row>
@@ -65,7 +65,8 @@
                     </v-row>
                 </v-col>
                 <v-col cols="5">
-                    <DisplaySection refs="displayMenuRef" :cate=category :menu="menu" :parent=this />
+                    <DisplaySection refs="displayMenuRef" :cate=category :menu="menu" :type=type :options=options
+                        :sweetNess=sweetNess :total=sumPrice />
                 </v-col>
             </v-row>
 
@@ -84,12 +85,13 @@ export default {
             type: null,
             sweetNess: null,
             options: [],
+            sumPrice: 0,
             cate: [
                 { no: 1, name: 'Coffee', key: 'coffee' },
                 { no: 2, name: 'Tea', key: 'tea' },
                 { no: 3, name: 'Soft drink', key: 'softDrink' }],
             menu: '',
-            order: [],
+            order: null,
             coffeeMenu: [
                 { no: 1, name: 'Americano', key: 'americano', price: 30 },
                 { no: 3, name: 'Espresso', key: 'espresso', price: 25 },
@@ -147,93 +149,81 @@ export default {
                 this.options = []
                 this.order = { ...this.order, category: e.key }
             }
-            console.log('Order IS::', this.order);
+
         },
-        onSelectMenu(e) {
-            console.log('xxxxxx', e);
+        onSelectMenu(item) {
             if (this.menu) {
-                if (this.menu === e.key) {
+                if (this.menu === item.key) {
                     this.menu = null
+                    this.type = null
+                    this.sweetNess = null
+                    this.options = []
                     this.order = { ...this.order, menu: null }
                 } else {
-                    this.menu = e.key
-                    this.order = { ...this.order, menu: e.key }
+                    this.menu = item.key
+                    this.order = { ...this.order, menu: item }
                 }
             } else {
-                this.menu = e.key
-                this.order = { ...this.order, menu: e.key }
+                this.menu = item.key
+                this.order = { ...this.order, menu: item }
             }
-            console.log('Order IS::', this.order);
+
+            this.calcPrice()
         },
-        onSelectAttributes(e, refs) {
-            console.log(e, 'refs:::', refs);
+        onSelectAttributes(item, refs) {
+
             if (refs === 'attType') {
                 if (this.type) {
-                    console.log('ref attType /// this.type');
-                    if (this.type === e.key) {
+
+                    if (this.type === item.key) {
                         this.type = null
-                        this.order = { ...this.order, attributes: { type: null } }
+                        this.order = { ...this.order, attType: null }
                     } else {
-                        this.type = e.key
-                        this.order = { ...this.order, attributes: { type: e.key } }
+                        this.type = item.key
+                        this.order = { ...this.order, attType: item }
                     }
                 } else {
-                    console.log('ref attType /// not.type');
-                    this.type = e.key
-                    this.order = { ...this.order, attributes: { type: e.key } }
+
+                    this.type = item.key
+                    this.order = { ...this.order, attType: item }
                 }
             } else if (refs === 'sweetness') {
                 if (this.sweetNess) {
-                    if (this.sweetNess === e.key) {
+                    if (this.sweetNess === item.key) {
                         this.sweetNess = null
-                        this.order = { ...this.order, attributes: { sweetNess: null } }
+                        this.order = { ...this.order, sweetNess: null }
                     } else {
-                        this.sweetNess = e.key
-                        this.order = { ...this.order, attributes: { sweetNess: e.key } }
+                        this.sweetNess = item.key
+                        this.order = { ...this.order, sweetNess: item.key }
                     }
                 } else {
-                    this.sweetNess = e.key
-                    this.order = { ...this.order, attributes: { sweetNess: e.key } }
+                    this.sweetNess = item.key
+                    this.order = { ...this.order, sweetNess: item.key }
                 }
             } else if (refs === 'options') {
-                console.log('thisOptions');
-                if (this.options.some((el) => el == e.key)) {
-                    console.log('xxx');
-                    this.options = this.options.filter((el) => el !== e.key)
+
+                if (this.options.some((e) => e == item.key)) {
+                    let _options = this.options.filter((e) => e !== item.key)
+                    this.options = _options
+                    this.order = { ...this.order, options: _options }
                 } else {
-                    this.options.push(e.key)
+                    this.options.push(item.key)
+                    this.order = { ...this.order, options: this.options }
                 }
-
-                // this.options = [...new Set(this.options)]
-                // if (this.options.length > 0) {
-                //     console.log('มี option');
-                // } else {
-                //     console.log('ไม่มี option');
-
-                //     // this.options = new Set(e.key)
-                // }
-                // if (e.key.includes(this.option)) {
-                //     console.log('Key Include');
-                //     this.options.push(e.key)
-                // } else {
-                //     console.log('Key Not Include');
-                //     this.options.push(e.key)
-                // }
-                // if (this.option) {
-                //     if (this.sweetNess === e.key) {
-                //         this.option = null
-                //         this.order = { ...this.order, attributes: { options: null } }
-                //     } else {
-                //         this.option = [...this.option, e.key]
-                //         this.order = { ...this.order, attributes: { options: e.key } }
-                //     }
-                // } else {
-                //     this.sweetNess = e.key
-                //     this.order = { ...this.order, attributes: { sweetNess: e.key } }
-                // }
             }
-            console.log('Order:::', this.order);
-            console.log('Optopns222', this.options);
+            this.calcPrice()
+        },
+        calcPrice() {
+            let result = 0
+            if (this.order.menu) {
+                result = result + this.order.menu.price
+            } else if (this.order.menu === null) {
+                result = 0
+            }
+            if (this.order.attType) {
+                result = result + this.order.attType.price
+            }
+            this.sumPrice = result
         },
     },
 }

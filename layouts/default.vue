@@ -6,7 +6,7 @@
         <v-img src="../assets/img/coffee_cup_logo.svg">
         </v-img>
       </v-btn> -->
-      <v-avatar width="20" height="20">
+      <v-avatar width="35" height="35">
         <img src="../assets/img/coffee_cup_logo.svg" alt="logo">
       </v-avatar>
       <v-toolbar-title class="text-title">{{ title }}</v-toolbar-title>
