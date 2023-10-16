@@ -7,7 +7,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="7">
+                <v-col cols="12" md="7">
                     <v-row class="my-2">
                         <v-col class="col-style" cols="3">
                             Category:
@@ -57,7 +57,7 @@
                         </v-col>
                     </v-row>
                 </v-col>
-                <v-col cols="5">
+                <v-col cols="12" md="5">
                     <DisplaySection refs="displayMenuRef" :cate=category :menu="menu" :type=type :options=options
                         :sweetNess=sweetNess :total=sumPrice />
                 </v-col>

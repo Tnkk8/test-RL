@@ -27,6 +27,10 @@ export default {
   router: {
     middleware: ["defaultRedirect"],
   },
+  server: {
+    host: "0.0.0.0", // Listen on all available network interfaces
+    port: 7777, // You can set your desired port here
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
