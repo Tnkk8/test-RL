@@ -12,22 +12,17 @@
                         <v-col class="col-style" cols="3">
                             Category:
                         </v-col>
-                        <v-col v-for="item of cate">
-                            <Button :isActive="category == item.key" :items="item" :onClick="onSelectCate" />
+                        <v-col v-for="item of data" :key="item.id">
+                            <Button type="defaultBtn" :isActive="category == item.name" :items="item"
+                                :onClick="onSelectCate" />
                         </v-col>
                     </v-row>
                     <v-row v-if="category" class="my-2">
                         <v-col class="col-style" cols="3">
                             menu:
                         </v-col>
-                        <v-col cols="3" v-if="category === 'coffee'" v-for=' item in coffeeMenu'>
-                            <Button :isActive="menu == item.key" :items="item" :onClick="onSelectMenu" />
-                        </v-col>
-                        <v-col cols="3" v-if="category === 'tea'" v-for=' item in teaMenu'>
-                            <Button :isActive="menu == item.key" :items="item" :onClick="onSelectMenu" />
-                        </v-col>
-                        <v-col cols="3" v-if="category === 'softDrink'" v-for=' item in softMenu'>
-                            <Button :isActive="menu == item.key" :items="item" :onClick="onSelectMenu" />
+                        <v-col cols="3" v-for=' item in categoryFilter.menus' :key="item.id">
+                            <Button type="defaultBtn" :isActive="menu == item.key" :items="item" :onClick="onSelectMenu" />
                         </v-col>
                     </v-row>
                     <v-row v-if="menu" class="my-2">
@@ -37,27 +32,25 @@
                         <v-col cols="9" style="align-self: center">
                             <v-divider></v-divider>
                         </v-col>
-                    </v-row>
-                    <v-row v-if="menu">
                         <v-col>
-                            <v-row v-if="category === 'coffee' || category === 'tea'" class="att-list">
-                                <v-col cols="3">Type:</v-col>
-                                <v-col cols="3" v-for="item in attType">
-                                    <Button :isActive="type == item.key" :items="item" :onClick="onSelectAttributes"
-                                        refs="attType" />
+                            <v-row v-if="attType.length > 0" class="att-list">
+                                <v-col cols="3" style="font-size: 22px;">Type:</v-col>
+                                <v-col cols="3" v-for="item in attType" :key="item.id">
+                                    <Button type="defaultBtn" :isActive="type == item.name" :items="item"
+                                        :onClick="onSelectAttributes" refs="attType" />
                                 </v-col>
                             </v-row>
-                            <v-row v-if="category === 'coffee' || category === 'tea'" class="att-list overflow">
-                                <v-col cols="3">Sweetness:</v-col>
-                                <v-col cols="3" v-for="item in attSweetness">
-                                    <Button :isActive="sweetNess == item.key" :items="item" :onClick="onSelectAttributes"
-                                        refs="sweetness" />
+                            <v-row v-if="attSweetness.length > 0" class="att-list">
+                                <v-col cols="3" style="font-size: 22px;">sweetness:</v-col>
+                                <v-col cols="3" v-for="item in attSweetness" :key="item.id">
+                                    <Button type="defaultBtn" :isActive="sweetNess == item.name" :items="item"
+                                        :onClick="onSelectAttributes" refs="sweetness" />
                                 </v-col>
                             </v-row>
-                            <v-row class="att-list">
-                                <v-col cols="3">Options:</v-col>
-                                <v-col cols="3" v-for="item in attOption">
-                                    <Button :isActive="options.includes(item.key)" :items="item"
+                            <v-row v-if="attOption.length > 0" class="att-list">
+                                <v-col cols="3" style="font-size: 22px;">options:</v-col>
+                                <v-col cols="3" v-for="item in attOption" :key="item.id">
+                                    <Button type="defaultBtn" :isActive="options.includes(item.name)" :items="item"
                                         :onClick="onSelectAttributes" refs="options" />
                                 </v-col>
                             </v-row>
@@ -80,135 +73,110 @@ export default {
     middleware: 'defaultRedirect',
     data() {
         return {
+            attributeList: [],
             category: '',
-            dataTest: 'True5555',
+            data: [],
+            categoryFilter: null,
             type: null,
             sweetNess: null,
             options: [],
             sumPrice: 0,
-            cate: [
-                { no: 1, name: 'Coffee', key: 'coffee' },
-                { no: 2, name: 'Tea', key: 'tea' },
-                { no: 3, name: 'Soft drink', key: 'softDrink' }],
             menu: '',
             order: null,
-            coffeeMenu: [
-                { no: 1, name: 'Americano', key: 'americano', price: 30 },
-                { no: 3, name: 'Espresso', key: 'espresso', price: 25 },
-                { no: 4, name: 'Latte', key: 'latte', price: 35 },
-            ],
-            teaMenu: [
-                { no: 1, name: 'Taiwan Tea', key: 'taiwanTea', price: 35 },
-                { no: 2, name: 'Thai Tea', key: 'thaiTea', price: 25 },
-            ],
-            softMenu: [
-                { no: 1, name: 'Soda', key: 'soda', price: 15 },
-                { no: 2, name: 'Cola', key: 'cola', price: 15 },
-                { no: 3, name: 'Energy drink', key: 'energyDrink', price: 20 },
-            ],
-            attType: [
-                { no: 1, name: 'Hot', key: 'hot', price: 0 },
-                { no: 2, name: 'Cold', key: 'cold', price: 5 },
-            ],
-            attSweetness: [
-                { no: 1, name: 'Less', key: 'lessSugar', price: 0 },
-                { no: 2, name: 'Normal', key: 'normal', price: 0 },
-                { no: 3, name: 'More', key: 'moreSugar', price: 0 },
-            ],
-            attOption: [
-                { no: 1, name: 'Straw', key: 'straw', price: 0 },
-                { no: 2, name: 'Cover', key: 'cupCover', price: 0 },
-            ]
-
+            attType: [],
+            attSweetness: [],
+            attOption: []
         }
     },
-
+    async mounted() {
+        await this.fetchData()
+    },
     methods: {
-        onSelectCate(e) {
-            if (this.category) {
-                if (this.category === e.key) {
-                    this.category = null
-                    this.menu = null
-                    this.type = null
-                    this.sweetNess = null
-                    this.options = []
-                    this.order = { ...this.order, category: null }
-                } else {
-                    this.category = e.key
-                    this.menu = null
-                    this.type = null
-                    this.sweetNess = null
-                    this.options = []
-                    this.order = { ...this.order, category: e.key }
+        async fetchData() {
+            try {
+                const res = await this.$axios.get('/category');
+                if (res.status === 200) {
+                    this.data = res.data
+                    this.data.forEach(e => {
+                        if (e.attributes && e.attributes.length > 0) {
+                            this.attributeList.push(...e.attributes)
+                        }
+
+                    });
+                    this.attributeList = this.attributeList.map((item) => { return { ...item.attribute, cate_id: item.cate_id } })
                 }
-            } else {
-                this.category = e.key
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        onSelectCate(item) {
+            if (this.category === item.name) {
+                this.category = null
                 this.menu = null
                 this.type = null
                 this.sweetNess = null
                 this.options = []
-                this.order = { ...this.order, category: e.key }
+                this.order = { ...this.order, category: null }
+                this.categoryFilter = null
+            } else {
+                this.category = item.name
+                this.menu = null
+                this.type = null
+                this.sweetNess = null
+                this.options = []
+                this.order = { ...this.order, category: item.name }
+                let dfs = this.data.filter(e => e.name === item.name)
+                this.categoryFilter = dfs[0]
             }
-
+            this.attType = this.attributeList.filter((e) => e.type === 'type' && e.cate_id === item.id)
+            this.attSweetness = this.attributeList.filter((e) => e.type === 'sweetness' && e.cate_id === item.id)
+            this.attOption = this.attributeList.filter((e) => e.type === 'options' && e.cate_id === item.id)
         },
         onSelectMenu(item) {
-            if (this.menu) {
-                if (this.menu === item.key) {
-                    this.menu = null
-                    this.type = null
-                    this.sweetNess = null
-                    this.options = []
-                    this.order = { ...this.order, menu: null }
-                } else {
-                    this.menu = item.key
-                    this.order = { ...this.order, menu: item }
-                }
+            if (this.menu === item.key) {
+                this.menu = null
+                this.type = null
+                this.sweetNess = null
+                this.options = []
+                this.order = { ...this.order, menu: null }
             } else {
                 this.menu = item.key
                 this.order = { ...this.order, menu: item }
             }
-
             this.calcPrice()
         },
         onSelectAttributes(item, refs) {
-
-            if (refs === 'attType') {
-                if (this.type) {
-
-                    if (this.type === item.key) {
+            switch (refs) {
+                case 'attType': {
+                    if (this.type === item.name) {
                         this.type = null
                         this.order = { ...this.order, attType: null }
                     } else {
-                        this.type = item.key
+                        this.type = item.name
                         this.order = { ...this.order, attType: item }
                     }
-                } else {
-
-                    this.type = item.key
-                    this.order = { ...this.order, attType: item }
+                    break;
                 }
-            } else if (refs === 'sweetness') {
-                if (this.sweetNess) {
-                    if (this.sweetNess === item.key) {
+                case 'sweetness': {
+                    if (this.sweetNess === item.name) {
                         this.sweetNess = null
                         this.order = { ...this.order, sweetNess: null }
                     } else {
-                        this.sweetNess = item.key
-                        this.order = { ...this.order, sweetNess: item.key }
+                        this.sweetNess = item.name
+                        this.order = { ...this.order, sweetNess: item.name }
                     }
-                } else {
-                    this.sweetNess = item.key
-                    this.order = { ...this.order, sweetNess: item.key }
+                    break;
                 }
-            } else if (refs === 'options') {
-
-                if (this.options.some((e) => e == item.key)) {
-                    let _options = this.options.filter((e) => e !== item.key)
-                    this.options = _options
-                    this.order = { ...this.order, options: _options }
-                } else {
-                    this.options.push(item.key)
-                    this.order = { ...this.order, options: this.options }
+                case 'options': {
+                    if (this.options.some((e) => e == item.name)) {
+                        let _options = this.options.filter((e) => e !== item.name)
+                        this.options = _options
+                        this.order = { ...this.order, options: _options }
+                    } else {
+                        this.options.push(item.name)
+                        this.order = { ...this.order, options: this.options }
+                    }
+                    break;
                 }
             }
             this.calcPrice()
@@ -217,8 +185,6 @@ export default {
             let result = 0
             if (this.order.menu) {
                 result = result + this.order.menu.price
-            } else if (this.order.menu === null) {
-                result = 0
             }
             if (this.order.attType) {
                 result = result + this.order.attType.price

@@ -11,12 +11,11 @@
                         height="150">
                         <img src="../assets/img/ice-tea.png" alt="logo">
                     </v-avatar>
-                    <v-avatar v-if="cate === 'softDrink'" class="avatar-img px-0" style="border-radius: 0;" width="150"
+                    <v-avatar v-if="cate === 'softdrink'" class="avatar-img px-0" style="border-radius: 0;" width="150"
                         height="150">
                         <img src="../assets/img/soft-drink.png" alt="logo">
                     </v-avatar>
                 </v-row>
-
             </v-col>
             <v-col class="mt-4" cols="6">
                 <v-row v-if="cate">
@@ -27,7 +26,7 @@
                 <v-row v-if="menu">
                     <v-col v-if="type" class="pa-1" cols="4">type :</v-col>
                     <v-col class="pa-1 pt-1 col-value">{{ type }}
-                        <span v-if="type === 'cold'" style="margin-left: 5px;color: red;">+ 5
+                        <span v-if="type === 'Cold'" style="margin-left: 5px;color: red;">+ 5
                             <v-avatar class="avatar-img px-0" style="min-width: 20px;" width="15" height="15">
                                 <img src="../assets/img/coin.svg" alt="logo">
                             </v-avatar>
@@ -45,7 +44,7 @@
                         <v-divider color="red"></v-divider>
                     </v-col>
                 </v-row>
-                <v-row v-if="menu && type && options.length > 0">
+                <v-row v-if="isShow()">
                     <v-col class="pa-1" cols="4">Total:</v-col>
                     <v-col class="pa-0 col-value" style="margin-top: -10px;">
                         <span style="color: red;font-size: 36px;">{{
@@ -54,10 +53,7 @@
                         </span>
                     </v-col>
                     <v-col cols="12" style="align-self: center;margin: 0;padding: 0;">
-                        <v-divider color="red"></v-divider>
-                    </v-col>
-                    <v-col cols="12" style="align-self: center;margin: 0;margin-top:2px;padding: 0;">
-                        <v-divider color="red"></v-divider>
+                        <v-divider color="red"></v-divider><v-divider color="red"></v-divider>
                     </v-col>
                 </v-row>
                 <v-row v-if="cate === 'softDrink' && options.length > 0">
@@ -68,16 +64,14 @@
                     </v-col>
                     <v-col cols="12" style="align-self: center;margin: 0;padding: 0;">
                         <v-divider color="red"></v-divider>
-                    </v-col>
-                    <v-col cols="12" style="align-self: center;margin: 0;margin-top:2px;padding: 0;">
                         <v-divider color="red"></v-divider>
                     </v-col>
+                    <!-- <v-col cols="12" style="align-self: center;margin: 0;margin-top:2px;padding: 0;">
+                        <v-divider color="red"></v-divider>
+                    </v-col> -->
                 </v-row>
             </v-col>
-
-            <v-btn v-if="menu && options.length > 0" class="footer-btn">
-                Order Now !
-            </v-btn>
+            <Button class="footer-btn" v-if="isShow()" type="submitBtn" :items="footerBtn" />
         </v-row>
         <v-row v-else>
             <v-col cols="12" style="font-size: 32px;">
@@ -100,13 +94,21 @@ export default {
     },
     data() {
         return {
-            data: []
+            data: [],
+            footerBtn: { name: 'Order Now !' },
         }
     },
     methods: {
         splitOption(item) {
 
         },
+        isShow() {
+            if (this.cate === 'softdrink') {
+                return this.menu && this.options.length > 0
+            } else {
+                return this.menu && this.type && this.sweetNess && this.options.length > 0
+            }
+        }
     },
 }
 </script>
@@ -115,7 +117,7 @@ export default {
     background-color: green;
     position: relative;
     width: 100%;
-    height: 350px;
+    height: 380px;
     padding: 13px;
     margin-top: 20px;
     color: white;
@@ -127,29 +129,19 @@ export default {
     .header {
         font-size: 20px;
     }
-
-    // .footer {
-    //     // position: fixed;
-    //     // bottom: 0;
-    //     margin-top: auto;
-    //     width: 100%;
-    //     background-color: #f0f0f0;
-    //     /* Optional background color */
-    //     padding: 10px;
-    //     /* Optional padding for the text container */
-    // }
     .col-value {
         color: black;
         font-size: 18px;
     }
 
     .footer-btn {
-        color: red;
-        position: absolute;
         bottom: 0;
-        width: 100%;
+        color: red;
         font-size: 20px;
-        text-align: end;
+        margin-bottom: 15px;
+        position: absolute;
+        text-align: center;
+        width: 100%;
     }
 }
 </style>
