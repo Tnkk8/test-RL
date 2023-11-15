@@ -7,14 +7,18 @@
                         height="150">
                         <img src="../assets/img/coffee-cup-2.svg" alt="logo">
                     </v-avatar>
-                    <v-avatar v-if="cate === 'tea'" class="avatar-img px-0" style="border-radius: 0;" width="150"
+                    <!-- <v-avatar v-if="cate === 'coffee'" class="avatar-img px-0" style="border-radius: 0;" width="150"
+                        height="150">
+                        <img src="../assets/img/coffee-cup-2.svg" alt="logo">
+                    </v-avatar> -->
+                    <!-- <v-avatar v-if="cate === 'tea'" class="avatar-img px-0" style="border-radius: 0;" width="150"
                         height="150">
                         <img src="../assets/img/ice-tea.png" alt="logo">
                     </v-avatar>
                     <v-avatar v-if="cate === 'softdrink'" class="avatar-img px-0" style="border-radius: 0;" width="150"
                         height="150">
                         <img src="../assets/img/soft-drink.png" alt="logo">
-                    </v-avatar>
+                    </v-avatar> -->
                 </v-row>
             </v-col>
             <v-col class="mt-4" cols="6">
